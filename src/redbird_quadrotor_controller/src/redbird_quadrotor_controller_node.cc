@@ -19,7 +19,7 @@ void await_fcu_connection() {
 }
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "redbird_quadrotor_controller");
+  ros::init(argc, argv, "redbird_quadrotor_controller_node");
   ros::NodeHandle nh;
 
   ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>
