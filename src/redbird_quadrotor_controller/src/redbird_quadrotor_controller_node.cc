@@ -11,7 +11,7 @@ void state_cb(const mavros_msgs::State::ConstPtr& msg){
 
 static const double setpoint_publishing_rate = 20.;
 
-void await_fcu_connection() {
+void await_fcu_connection(ros::Rate& rate) {
   while (ros::ok() && !current_state.connected) {
     ros::spinOnce();
     rate.sleep();
@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
 
   ros::Rate rate(setpoint_publishing_rate);
 
-  await_fcu_connection();
+  await_fcu_connection(rate);
 
   geometry_msgs::PoseStamped pose;
   pose.pose.position.x = 0;
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
   
   // send a few setpoints before starting.
   for(int i = 100; ros::ok() && i > 0; --i){
-    local_pos_pub.publish(pose);
+    position_publisher.publish(pose);
     ros::spinOnce();
     rate.sleep();
   }
@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
       if (!current_state.armed) {
         if (arming_client.call(arm_command)
           && arm_command.response.success) {
-          ROS_INFO("Vehicle armed")
+          ROS_INFO("Vehicle armed");
         }
       }
     }
