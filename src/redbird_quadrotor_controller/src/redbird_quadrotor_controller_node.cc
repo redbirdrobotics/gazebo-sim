@@ -60,6 +60,8 @@ int main(int argc, char **argv) {
     if (!five_seconds_elapsed)
       continue;
     
+    ROS_INFO("Five seconds elapsed");
+    
     last_request = ros::Time::now();
     
     if (current_state.mode != "OFFBOARD") {
